@@ -27,6 +27,7 @@ RUN apt-get install -y libapache2-mod-php php php-dev php-json \
 
 #INSTALL SSDEEP
 WORKDIR /usr/local/src
+
 RUN wget https://github.com/ssdeep-project/ssdeep/releases/download/release-2.14.1/ssdeep-2.14.1.tar.gz
 RUN tar zxvf ssdeep-2.14.1.tar.gz
 WORKDIR /usr/local/src/ssdeep-2.14.1
@@ -37,9 +38,9 @@ RUN make install
 RUN apt-get install -y ssdeep 
 RUN pecl channel-update pecl.php.net
 RUN pecl install ssdeep
-RUN phpenmod ssdeep
-
 RUN echo 'extension=ssdeep.so' >  /etc/php/7.2/mods-available/ssdeep.ini
+USER root
+RUN phpenmod ssdeep
 
 # Fix php.ini with recommended settings
 RUN sed -i \
