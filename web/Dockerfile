@@ -6,10 +6,10 @@ ENV DEBIAN_FRONTEND noninteractive
 
 RUN apt-get update && \
     apt-get dist-upgrade -y && apt-get autoremove -y && apt-get clean && \
-    apt-get install -y software-properties-common && \
-    apt-get install -y postfix && \
-    apt-get install -y mysql-client curl gcc git gnupg-agent \
-        make python openssl redis-server sudo vim zip locales
+    apt-get install -y software-properties-common \
+    postfix mysql-client curl gcc git\
+    gnupg-agent make python openssl redis-server \
+    sudo vim zip locales
 
 RUN locale-gen en_US.UTF-8
 ENV LANG en_US.UTF-8
@@ -22,8 +22,24 @@ RUN apt-get install -y apache2 apache2-doc apache2-utils && \
 # PHP 7.2 and install MySQL PDO extension
 RUN apt-get install -y libapache2-mod-php php php-dev php-json \
         php-mysql php-redis php-xml php-mbstring \
-        php-gd php-pear php-opcache \
+        php-gd php-pear php-opcache wget \
         pkg-config libbson-1.0 libmongoc-1.0-0
+
+#INSTALL SSDEEP
+WORKDIR /usr/local/src
+RUN wget https://github.com/ssdeep-project/ssdeep/releases/download/release-2.14.1/ssdeep-2.14.1.tar.gz
+RUN tar zxvf ssdeep-2.14.1.tar.gz
+WORKDIR /usr/local/src/ssdeep-2.14.1
+RUN ./configure --datadir=/usr --prefix=/usr --localstatedir=/var --sysconfdir=/etc
+RUN make
+RUN make install
+
+RUN apt-get install -y ssdeep 
+RUN pecl channel-update pecl.php.net
+RUN pecl install ssdeep
+RUN phpenmod ssdeep
+
+RUN echo 'extension=ssdeep.so' >  /etc/php/7.2/mods-available/ssdeep.ini
 
 # Fix php.ini with recommended settings
 RUN sed -i \
@@ -32,6 +48,8 @@ RUN sed -i \
         -e "s/upload_max_filesize = 2M/upload_max_filesize = 50M/" \
         -e "s/post_max_size = 8M/post_max_size = 50M/" \
         /etc/php/7.2/apache2/php.ini
+
+
 
 RUN apt-get install -y python3-dev python3-pip python3-setuptools \
         python3-lxml libjpeg-dev \
@@ -55,7 +73,8 @@ RUN pip3 install git+https://github.com/STIXProject/python-stix.git \
                  git+https://github.com/CybOXProject/mixbox.git \
                  git+https://github.com/MAECProject/python-maec.git \
                  /var/www/MISP/cti-python-stix2 \
-                 plyara
+                 plyara  \
+                 pydeep
 
 USER www-data
 WORKDIR /var/www/MISP
