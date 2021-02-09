@@ -9,7 +9,7 @@ RUN apt-get update && \
     apt-get install -y software-properties-common \
     postfix mysql-client curl gcc git\
     gnupg-agent make python openssl redis-server \
-    sudo vim zip locales wget
+    sudo vim zip locales wget libgpgme-dev
 
 RUN locale-gen en_US.UTF-8
 ENV LANG en_US.UTF-8
@@ -39,18 +39,10 @@ RUN apt install software-properties-common -qy && \
     add-apt-repository ppa:ondrej/php -y && \
     apt update && \
     apt install -qy \
-    libapache2-mod-php7.4 \
-    php7.4 \
-    php7.4-cli \
-    php7.4-dev \
-    php7.4-json \
-    php7.4-xml \
-    php7.4-mysql \
-    php7.4-opcache \
-    php7.4-readline \
-    php7.4-mbstring \
-    php-redis \
-    php-gnupg \
+    libapache2-mod-php7.4 php7.4 php7.4-cli php7.4-dev \
+    php7.4-json php7.4-xml php7.4-mysql php7.4-opcache \
+    php7.4-readline php7.4-mbstring php7.4-pear php7.4-zip \
+    php7.4-redis php7.4-gnupg pkg-config libbson-1.0 libmongoc-1.0-0 \
     php-gd  && \
     apt update && \
     apt upgrade -y
