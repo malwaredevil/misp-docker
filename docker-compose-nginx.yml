@@ -17,8 +17,8 @@ services:
     image: misp:latest
     restart: unless-stopped
     volumes:
-      - /dev/urandom:/dev/random
-      - ${DATA_DIR}/web:/var/www/MISP
+      - urandom:/dev/random
+      - web:/var/www/MISP
     environment:
       - MYSQL_HOST=${MYSQL_HOST}
       - MYSQL_DATABASE=${MYSQL_DATABASE}
@@ -35,10 +35,16 @@ services:
     image: mysql/mysql-server:5.7
     restart: unless-stopped
     volumes:
-      - ${DATA_DIR}/db:/var/lib/mysql
+      - misp-docker-db:/var/lib/mysql
     environment:
       - MYSQL_DATABASE=${MYSQL_DATABASE}
       - MYSQL_USER=${MYSQL_USER}
       - MYSQL_PASSWORD=${MYSQL_PASSWORD}
       - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
-
+volumes:
+  misp-docker-db:
+    name: "misp-docker-db"
+  urandom:
+    name: "urandom"
+  web:
+    name: "web"

@@ -1,8 +1,13 @@
-MISP Docker
+MISP Docker (Malware Devil fork of https://github.com/MISP/misp-docker)
 ===========
-
-[![](https://travis-ci.org/MISP/misp-docker.svg?branch=master)](https://travis-ci.org/yaleman/misp-docker)
-
+1. [MISP Docker (Malware Devil fork of https://github.com/MISP/misp-docker)](#misp-docker-malware-devil-fork-of-httpsgithubcommispmisp-docker)
+   1. [Config](#config)
+2. [Optional NGINX config](#optional-nginx-config)
+3. [Building your image](#building-your-image)
+   1. [Fetch files](#fetch-files)
+   2. [Build the containers](#build-the-containers)
+   3. [Run containers](#run-containers)
+4. [Optional NGINX config - SSL certificates](#optional-nginx-config-ssl-certificates)
 The files in this repository are used to create a Docker container running a [MISP](http://www.misp-project.org) ("Malware Information Sharing Platform") instance.
 
 I rewrote the Docker file to split the components in multiple containers (which is more in the philosophy of Docker). Therefore there is no longer a Dockerfile in the root directory.

@@ -11,8 +11,8 @@ services:
     ports:
       - "80:80"
     volumes:
-      - /dev/urandom:/dev/random
-      - ${DATA_DIR}/web:/var/www/MISP
+      - urandom:/dev/random
+      - web:/var/www/MISP
     environment:
       - MYSQL_HOST=${MYSQL_HOST}
       - MYSQL_DATABASE=${MYSQL_DATABASE}
@@ -29,7 +29,7 @@ services:
     image: mysql/mysql-server:5.7
     restart: unless-stopped
     volumes:
-      - ${DATA_DIR}/db:/var/lib/mysql
+      - db:/var/lib/mysql
     environment:
       - MYSQL_DATABASE=${MYSQL_DATABASE}
       - MYSQL_USER=${MYSQL_USER}
