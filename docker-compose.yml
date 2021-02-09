@@ -29,9 +29,16 @@ services:
     image: mysql/mysql-server:5.7
     restart: unless-stopped
     volumes:
-      - db:/var/lib/mysql
+      - misp-docker-db:/var/lib/mysql
     environment:
       - MYSQL_DATABASE=${MYSQL_DATABASE}
       - MYSQL_USER=${MYSQL_USER}
       - MYSQL_PASSWORD=${MYSQL_PASSWORD}
       - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+volumes:
+  misp-docker-db:
+    name: "misp-docker-db"
+  urandom:
+    name: "urandom"
+  web:
+    name: "web"
