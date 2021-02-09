@@ -37,15 +37,16 @@ RUN apt-get install -y apache2 apache2-doc apache2-utils && \
 #PHP 7.4 and install MYSQL PDO extension
 RUN apt install software-properties-common -qy && \
     add-apt-repository ppa:ondrej/php -y && \
-    apt update && \
-    apt install -qy \
+    apt-get update -y && \
+    apt-get upgrade -y && \
+    apt-get install -y \
     libapache2-mod-php7.4 php7.4 php7.4-cli php7.4-dev \
     php7.4-json php7.4-xml php7.4-mysql php7.4-opcache \
     php7.4-readline php7.4-mbstring php-pear php7.4-zip \
     php7.4-redis php7.4-gnupg pkg-config libbson-1.0 libmongoc-1.0-0 \
     php-gd  && \
-    apt update && \
-    apt upgrade -y
+    apt-get update -y && \
+    apt-get upgrade -y
 
 RUN sed -i \
         -e "s/max_execution_time = 30/max_execution_time = 300/" \
