@@ -35,7 +35,7 @@ RUN apt-get install -y apache2 apache2-doc apache2-utils && \
 #         /etc/php/7.2/apache2/php.ini
 
 #PHP 7.4 and install MYSQL PDO extension
-RUN apt install software-properties-common -qy && \
+RUN apt-get install software-properties-common -y && \
     add-apt-repository ppa:ondrej/php -y && \
     apt-get update -y && \
     apt-get upgrade -y && \
