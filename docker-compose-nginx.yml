@@ -17,7 +17,7 @@ services:
     image: misp:latest
     restart: unless-stopped
     volumes:
-      - urandom:/dev/random
+      - /dev/urandom:/dev/random
       - web:/var/www/MISP
     environment:
       - MYSQL_HOST=${MYSQL_HOST}
@@ -44,7 +44,5 @@ services:
 volumes:
   misp-docker-db:
     name: "misp-docker-db"
-  urandom:
-    name: "urandom"
   web:
     name: "web"
