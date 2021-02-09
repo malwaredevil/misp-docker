@@ -19,22 +19,48 @@ RUN apt-get install -y apache2 apache2-doc apache2-utils && \
     a2dismod status && \
     a2dissite 000-default
 
-# PHP 7.2 and install MySQL PDO extension
-RUN apt-get install -y libapache2-mod-php php php-dev php-json \
-        php-mysql php-redis php-xml php-mbstring php-cli \
-        php-gd php-pear php-opcache php-readline \
-        pkg-config libbson-1.0 libmongoc-1.0-0 php-zip php-gnupg
+# # PHP 7.2 and install MySQL PDO extension
+# RUN apt-get install -y libapache2-mod-php php php-dev php-json \
+#         php-mysql php-redis php-xml php-mbstring php-cli \
+#         php-gd php-pear php-opcache php-readline \
+#         pkg-config libbson-1.0 libmongoc-1.0-0 php-zip php-gnupg
 
 
-# Fix php.ini with recommended settings
+# # Fix php.ini with recommended settings
+# RUN sed -i \
+#         -e "s/max_execution_time = 30/max_execution_time = 300/" \
+#         -e "s/memory_limit = 128M/memory_limit = 2048M/" \
+#         -e "s/upload_max_filesize = 2M/upload_max_filesize = 50M/" \
+#         -e "s/post_max_size = 8M/post_max_size = 50M/" \
+#         /etc/php/7.2/apache2/php.ini
+
+#PHP 7.4 and install MYSQL PDO extension
+RUN apt install software-properties-common -qy && \
+    add-apt-repository ppa:ondrej/php -y && \
+    apt update && \
+    apt install -qy \
+    libapache2-mod-php7.4 \
+    php7.4 \
+    php7.4-cli \
+    php7.4-dev \
+    php7.4-json \
+    php7.4-xml \
+    php7.4-mysql \
+    php7.4-opcache \
+    php7.4-readline \
+    php7.4-mbstring \
+    php-redis \
+    php-gnupg \
+    php-gd  && \
+    apt update && \
+    apt upgrade -y
+
 RUN sed -i \
         -e "s/max_execution_time = 30/max_execution_time = 300/" \
         -e "s/memory_limit = 128M/memory_limit = 2048M/" \
         -e "s/upload_max_filesize = 2M/upload_max_filesize = 50M/" \
         -e "s/post_max_size = 8M/post_max_size = 50M/" \
-        /etc/php/7.2/apache2/php.ini
-
-
+        /etc/php/7.4/apache2/php.ini
 
 RUN apt-get install -y python3-dev python3-pip python3-setuptools \
         python3-lxml libjpeg-dev \
@@ -203,9 +229,13 @@ RUN apt-get install -y ssdeep
 RUN pecl channel-update pecl.php.net
 RUN pecl install ssdeep
 RUN echo 'extension=ssdeep.so' >  /etc/php/7.2/mods-available/ssdeep.ini
+RUN echo 'extension=ssdeep.so' >  /etc/php/7.4/mods-available/ssdeep.ini
 USER root
 RUN phpenmod ssdeep
 RUN phpenmod zip
+RUN  a2dismod php7.2
+RUN  a2enmod php7.4
+RUN  update-alternatives --set php /usr/bin/php7.4
  
 # Modify syslog configuration
 RUN sed -i -E 's/^(\s*)system\(\);/\1unix-stream("\/dev\/log");/' /etc/syslog-ng/syslog-ng.conf
