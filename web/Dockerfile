@@ -9,7 +9,7 @@ RUN apt-get update && \
     apt-get install -y software-properties-common \
     postfix mysql-client curl gcc git\
     gnupg-agent make python openssl redis-server \
-    sudo vim zip locales
+    sudo vim zip locales wget
 
 RUN locale-gen en_US.UTF-8
 ENV LANG en_US.UTF-8
@@ -21,9 +21,9 @@ RUN apt-get install -y apache2 apache2-doc apache2-utils && \
 
 # PHP 7.2 and install MySQL PDO extension
 RUN apt-get install -y libapache2-mod-php php php-dev php-json \
-        php-mysql php-redis php-xml php-mbstring \
-        php-gd php-pear php-opcache wget \
-        pkg-config libbson-1.0 libmongoc-1.0-0
+        php-mysql php-redis php-xml php-mbstring php-cli \
+        php-gd php-pear php-opcache php-readline \
+        pkg-config libbson-1.0 libmongoc-1.0-0 php-zip php-gnupg
 
 #INSTALL SSDEEP
 WORKDIR /usr/local/src
@@ -41,6 +41,7 @@ RUN pecl install ssdeep
 RUN echo 'extension=ssdeep.so' >  /etc/php/7.2/mods-available/ssdeep.ini
 USER root
 RUN phpenmod ssdeep
+RUN phpenmod zip
 
 # Fix php.ini with recommended settings
 RUN sed -i \
@@ -63,8 +64,11 @@ RUN chown www-data:www-data /var/www
 USER www-data
 RUN git clone https://github.com/MISP/MISP.git
 WORKDIR /var/www/MISP
-RUN git checkout tags/$(git describe --tags `git rev-list --tags --max-count=1`) && \
-    git config core.filemode false && \
+# RUN git checkout tags/$(git describe --tags `git rev-list --tags --max-count=1`) && \
+#     git config core.filemode false && \
+#     git submodule update --init --recursive && \
+#     git submodule foreach --recursive git config core.filemode false
+RUN git config core.filemode false && \
     git submodule update --init --recursive && \
     git submodule foreach --recursive git config core.filemode false
 
