@@ -25,23 +25,6 @@ RUN apt-get install -y libapache2-mod-php php php-dev php-json \
         php-gd php-pear php-opcache php-readline \
         pkg-config libbson-1.0 libmongoc-1.0-0 php-zip php-gnupg
 
-#INSTALL SSDEEP
-WORKDIR /usr/local/src
-
-RUN wget https://github.com/ssdeep-project/ssdeep/releases/download/release-2.14.1/ssdeep-2.14.1.tar.gz
-RUN tar zxvf ssdeep-2.14.1.tar.gz
-WORKDIR /usr/local/src/ssdeep-2.14.1
-RUN ./configure --datadir=/usr --prefix=/usr --localstatedir=/var --sysconfdir=/etc
-RUN make
-RUN make install
-
-RUN apt-get install -y ssdeep 
-RUN pecl channel-update pecl.php.net
-RUN pecl install ssdeep
-RUN echo 'extension=ssdeep.so' >  /etc/php/7.2/mods-available/ssdeep.ini
-USER root
-RUN phpenmod ssdeep
-RUN phpenmod zip
 
 # Fix php.ini with recommended settings
 RUN sed -i \
@@ -93,6 +76,8 @@ RUN curl --fail --location -o composer-setup.php https://getcomposer.org/install
     php -r "unlink('composer-setup.php');"
 # END FIX
 
+
+
 RUN php composer.phar update && \
     php composer.phar config vendor-dir Vendor && \
     php composer.phar install --ignore-platform-reqs
@@ -100,6 +85,9 @@ USER root
 RUN phpenmod redis
 USER www-data
 RUN cp -fa /var/www/MISP/INSTALL/setup/config.php /var/www/MISP/app/Plugin/CakeResque/Config/config.php
+
+
+
 
 # Fix permissions
 USER root
@@ -200,6 +188,24 @@ RUN ( \
     echo 'startsecs = 0'; \
     echo 'autorestart = false'; \
 ) >> /etc/supervisor/conf.d/supervisord.conf
+
+#INSTALL SSDEEP
+WORKDIR /usr/local/src
+
+RUN wget https://github.com/ssdeep-project/ssdeep/releases/download/release-2.14.1/ssdeep-2.14.1.tar.gz
+RUN tar zxvf ssdeep-2.14.1.tar.gz
+WORKDIR /usr/local/src/ssdeep-2.14.1
+RUN ./configure --datadir=/usr --prefix=/usr --localstatedir=/var --sysconfdir=/etc
+RUN make
+RUN make install
+
+RUN apt-get install -y ssdeep 
+RUN pecl channel-update pecl.php.net
+RUN pecl install ssdeep
+RUN echo 'extension=ssdeep.so' >  /etc/php/7.2/mods-available/ssdeep.ini
+USER root
+RUN phpenmod ssdeep
+RUN phpenmod zip
  
 # Modify syslog configuration
 RUN sed -i -E 's/^(\s*)system\(\);/\1unix-stream("\/dev\/log");/' /etc/syslog-ng/syslog-ng.conf
