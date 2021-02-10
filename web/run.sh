@@ -126,7 +126,7 @@ GPGEOF
 		sudo -u www-data gpg --homedir /var/www/MISP/.gnupg --export --armor $MISP_ADMIN_EMAIL > /var/www/MISP/app/webroot/gpg.asc
 
                 sudo -u www-data /var/www/MISP/app/Console/cake Admin setSetting "GnuPG.email" "$MISP_ADMIN_EMAIL"
-                sudo -u www-data /var/www/MISP/app/Console/cake setSetting "GnuPG.homedir" "/var/www/MISP/.gnupg"
+                sudo -u www-data /var/www/MISP/app/Console/cake Admin setSetting "GnuPG.homedir" "/var/www/MISP/.gnupg"
                 sudo -u www-data /var/www/MISP/app/Console/cake Admin setSetting "GnuPG.password" "$MISP_GPG_PASSWORD"
         fi
 
