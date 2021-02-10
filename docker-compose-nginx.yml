@@ -29,7 +29,7 @@ services:
       - MISP_BASEURL=${MISP_BASEURL}
       - POSTFIX_RELAY_HOST=${POSTFIX_RELAY_HOST}
       - TIMEZONE=${TIMEZONE}
-
+      - MISP_GPG_PASSWORD=${MISP_GPG_PASSWORD}
   db:
     container_name: misp_db
     image: mysql/mysql-server:5.7

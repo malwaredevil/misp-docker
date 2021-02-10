@@ -105,6 +105,7 @@ if [ -r /.firstboot.tmp ]; then
 
         # Generate the admin user PGP key
         echo "Creating admin GnuPG key"
+        echo "Passphrase is: $GPG_PASSWORD"
         if [ -z "$MISP_ADMIN_EMAIL" -o -z "$MISP_ADMIN_PASSPHRASE" ]; then
                 echo "No admin details provided, don't forget to generate the PGP key manually!"
         else
@@ -116,7 +117,7 @@ Key-Length: 2048
 Name-Real: MISP Admin
 Name-Email: $MISP_ADMIN_EMAIL
 Expire-Date: 0
-Passphrase: $MISP_ADMIN_PASSPHRASE
+Passphrase: $GPG_PASSWORD
 %commit
 %echo Done
 GPGEOF
