@@ -224,15 +224,15 @@ RUN tar czpf /root/MISP.tgz .
     # The email address should match the one set in the config.php
     # set in the configuration menu in the administration menu configuration file
 
-RUN  echo     'Key-Type: default' 
-RUN  'Key-Length: "1024"' >> /tmp/gen-key-script
-RUN  'Subkey-Type: default' >> /tmp/gen-key-script
-RUN  'Name-Real: "MISP Admin"' >> /tmp/gen-key-script
-RUN  'Name-Comment: "Default MISP KEY"' >> /tmp/gen-key-script
-RUN  'Name-Email: $GPG_EMAIL_ADDRESS' >> /tmp/gen-key-script
-RUN  'Expire-Date: 0' >> /tmp/gen-key-script
-RUN  'Passphrase: $GPG_PASSPHRASE' >> /tmp/gen-key-script
-RUN  '%commit' >> /tmp/gen-key-script
+RUN  echo 'Key-Type: default' >> /tmp/gen-key-script 
+RUN  echo 'Key-Length: 1024' >> /tmp/gen-key-script
+RUN  echo 'Subkey-Type: default' >> /tmp/gen-key-script
+RUN  echo 'Name-Real: "MISP Admin"' >> /tmp/gen-key-script
+RUN  echo 'Name-Comment: "Default MISP KEY"' >> /tmp/gen-key-script
+RUN  echo 'Name-Email: $GPG_EMAIL_ADDRESS' >> /tmp/gen-key-script
+RUN  echo 'Expire-Date: 0' >> /tmp/gen-key-script
+RUN  echo 'Passphrase: $GPG_PASSPHRASE' >> /tmp/gen-key-script
+RUN  echo '%commit' >> /tmp/gen-key-script
 
 
 USER www-data
