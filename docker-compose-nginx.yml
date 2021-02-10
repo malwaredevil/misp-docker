@@ -19,8 +19,16 @@ services:
     volumes:
       - /dev/urandom:/dev/random
       - misp-docker-web:/var/www/MISP
-    env_file:
-      - ".env"
+    environment:
+      - MYSQL_HOST=${MYSQL_HOST}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - MISP_ADMIN_EMAIL=${MISP_ADMIN_EMAIL}
+      - MISP_ADMIN_PASSPHRASE=${MISP_ADMIN_PASSPHRASE}
+      - MISP_BASEURL=${MISP_BASEURL}
+      - POSTFIX_RELAY_HOST=${POSTFIX_RELAY_HOST}
+      - TIMEZONE=${TIMEZONE}
 
   db:
     container_name: misp_db
@@ -28,8 +36,11 @@ services:
     restart: unless-stopped
     volumes:
       - misp-docker-db:/var/lib/mysql
-    env_file:
-      - ".env"
+    environment:
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
 volumes:
   misp-docker-db:
     name: "misp-docker-db"
