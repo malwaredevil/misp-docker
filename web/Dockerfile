@@ -225,7 +225,7 @@ RUN tar czpf /root/MISP.tgz .
     # set in the configuration menu in the administration menu configuration file
 
 RUN  echo     'Key-Type: default' 
-RUN  'Key-Length: 1024' >> /tmp/gen-key-script
+RUN  'Key-Length: "1024"' >> /tmp/gen-key-script
 RUN  'Subkey-Type: default' >> /tmp/gen-key-script
 RUN  'Name-Real: "MISP Admin"' >> /tmp/gen-key-script
 RUN  'Name-Comment: "Default MISP KEY"' >> /tmp/gen-key-script
