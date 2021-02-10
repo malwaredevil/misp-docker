@@ -117,7 +117,7 @@ Key-Length: 2048
 Name-Real: MISP Admin
 Name-Email: $MISP_ADMIN_EMAIL
 Expire-Date: 0
-Passphrase: $GPG_PASSWORD
+Passphrase: $MISP_GPG_PASSWORD
 %commit
 %echo Done
 GPGEOF
