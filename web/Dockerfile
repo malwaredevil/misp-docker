@@ -222,7 +222,7 @@ RUN apt-get install -y ssdeep
 RUN pecl channel-update pecl.php.net
 RUN pecl install ssdeep
 RUN pecl install gnupg
-RUN echo 'extension=gnupg.so' >  /etc/php/7.2/mods-available/gnupg.ini
+RUN echo 'extension=gnupg.so' >  /etc/php/7.4/mods-available/gnupg.ini
 RUN echo 'extension=ssdeep.so' >  /etc/php/7.4/mods-available/ssdeep.ini
 USER root
 RUN phpenmod ssdeep
