@@ -19,21 +19,6 @@ RUN apt-get install -y apache2 apache2-doc apache2-utils && \
     a2dismod status && \
     a2dissite 000-default
 
-# # PHP 7.2 and install MySQL PDO extension
-# RUN apt-get install -y libapache2-mod-php php php-dev php-json \
-#         php-mysql php-redis php-xml php-mbstring php-cli \
-#         php-gd php-pear php-opcache php-readline \
-#         pkg-config libbson-1.0 libmongoc-1.0-0 php-zip php-gnupg
-
-
-# # Fix php.ini with recommended settings
-# RUN sed -i \
-#         -e "s/max_execution_time = 30/max_execution_time = 300/" \
-#         -e "s/memory_limit = 128M/memory_limit = 2048M/" \
-#         -e "s/upload_max_filesize = 2M/upload_max_filesize = 50M/" \
-#         -e "s/post_max_size = 8M/post_max_size = 50M/" \
-#         /etc/php/7.2/apache2/php.ini
-
 #PHP 7.4 and install MYSQL PDO extension
 RUN apt-get install software-properties-common -y && \
     add-apt-repository ppa:ondrej/php -y && \
@@ -66,10 +51,6 @@ RUN chown www-data:www-data /var/www
 USER www-data
 RUN git clone https://github.com/MISP/MISP.git
 WORKDIR /var/www/MISP
-# RUN git checkout tags/$(git describe --tags `git rev-list --tags --max-count=1`) && \
-#     git config core.filemode false && \
-#     git submodule update --init --recursive && \
-#     git submodule foreach --recursive git config core.filemode false
 RUN git config core.filemode false && \
     git submodule update --init --recursive && \
     git submodule foreach --recursive git config core.filemode false
@@ -104,9 +85,6 @@ USER root
 RUN phpenmod redis
 USER www-data
 RUN cp -fa /var/www/MISP/INSTALL/setup/config.php /var/www/MISP/app/Plugin/CakeResque/Config/config.php
-
-
-
 
 # Fix permissions
 USER root
@@ -242,6 +220,36 @@ RUN chmod 0755 /run.sh && touch /.firstboot.tmp
 WORKDIR /var/www/MISP
 RUN tar czpf /root/MISP.tgz .
 
+# SETUP GNUPG
+    # The email address should match the one set in the config.php
+    # set in the configuration menu in the administration menu configuration file
+
+RUN  echo     'Key-Type: default' 
+RUN  'Key-Length: 1024' >> /tmp/gen-key-script
+RUN  'Subkey-Type: default' >> /tmp/gen-key-script
+RUN  'Name-Real: "MISP Admin"' >> /tmp/gen-key-script
+RUN  'Name-Comment: "Default MISP KEY"' >> /tmp/gen-key-script
+RUN  'Name-Email: $GPG_EMAIL_ADDRESS' >> /tmp/gen-key-script
+RUN  'Expire-Date: 0' >> /tmp/gen-key-script
+RUN  'Passphrase: $GPG_PASSPHRASE' >> /tmp/gen-key-script
+RUN  '%commit' >> /tmp/gen-key-script
+
+
+USER www-data
+RUN gpg --homedir /var/www/MISP/.gnupg --batch --gen-key /tmp/gen-key-script
+USER www-data
+RUN sh -c "gpg --homedir /var/www/MISP/.gnupg --export --armor $GPG_EMAIL_ADDRESS" | tee /var/www/MISP/app/webroot/gpg.asc
+
+
+WORKDIR /var/www/MISP/.gnupg
+RUN touch .placeholder
+RUN /var/www/MISP/app/Console/cake Admin setSetting "GnuPG.email" "admin@admin.test"
+RUN /var/www/MISP/app/Console/cake setSetting "GnuPG.homedir" "/var/www/MISP/.gnupg"
+RUN /var/www/MISP/app/Console/cake Admin setSetting "GnuPG.password" "$GPG_PASSPHRASE"
+
+
+
+# START UP
 VOLUME /var/www/MISP
 EXPOSE 80
 ENTRYPOINT ["/run.sh"]
