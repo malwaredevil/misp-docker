@@ -144,6 +144,13 @@ fi
 /var/www/MISP/app/Console/cake live 1
 chown www-data:www-data /var/www/MISP/app/Config/config.php*
 
+mkdir -p /var/www/MISP/.gnupg
+cd /var/www/MISP/.gnupg
+sudo touch .placeholder
+/var/www/MISP/app/Console/cake Admin setSetting "GnuPG.email" "admin@admin.test"
+/var/www/MISP/app/Console/cake setSetting "GnuPG.homedir" "/var/www/MISP/.gnupg"
+/var/www/MISP/app/Console/cake Admin setSetting "GnuPG.password" "$GPG_PASSPHRASE"
+
 # Start supervisord
 echo "Starting supervisord"
 cd /

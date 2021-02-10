@@ -241,14 +241,6 @@ USER www-data
 RUN sh -c "gpg --homedir /var/www/MISP/.gnupg --export --armor $GPG_EMAIL_ADDRESS" | tee /var/www/MISP/app/webroot/gpg.asc
 
 
-WORKDIR /var/www/MISP/.gnupg
-RUN touch .placeholder
-RUN /var/www/MISP/app/Console/cake Admin setSetting "GnuPG.email" "admin@admin.test"
-RUN /var/www/MISP/app/Console/cake setSetting "GnuPG.homedir" "/var/www/MISP/.gnupg"
-RUN /var/www/MISP/app/Console/cake Admin setSetting "GnuPG.password" "$GPG_PASSPHRASE"
-
-
-
 # START UP
 VOLUME /var/www/MISP
 EXPOSE 80
