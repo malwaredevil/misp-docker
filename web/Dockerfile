@@ -3,35 +3,32 @@ FROM ubuntu:bionic
 
 # Install core components
 ENV DEBIAN_FRONTEND noninteractive
-
-RUN apt-get update && \
-    apt-get dist-upgrade -y && apt-get autoremove -y && apt-get clean && \
-    apt-get install -y software-properties-common \
-    postfix mysql-client curl gcc git\
-    gnupg-agent make python openssl redis-server \
-    sudo vim zip locales wget libgpgme-dev
-
-RUN locale-gen en_US.UTF-8
 ENV LANG en_US.UTF-8
-
-# Apache
-RUN apt-get install -y apache2 apache2-doc apache2-utils && \
-    a2dismod status && \
-    a2dissite 000-default
-
-#PHP 7.4 and install MYSQL PDO extension
-RUN apt-get install software-properties-common -y && \
-    add-apt-repository ppa:ondrej/php -y && \
-    apt-get update -y && \
-    apt-get upgrade -y && \
-    apt-get install -y \
+ENV BUILD_DEPS="build-essential software-properties-common" \
+    APP_DEPS="postfix mysql-client curl gcc git \
+    gnupg-agent make python openssl redis-server \
+    sudo vim zip locales wget libgpgme-dev \
+    apache2 apache2-doc apache2-utils \
+    python3-dev python3-pip python3-setuptools \
+    python3-lxml libjpeg-dev \
+    libxml2-dev libxslt1-dev zlib1g-dev libfuzzy-dev \
+    cron logrotate supervisor syslog-ng-core \
     libapache2-mod-php7.4 php7.4 php7.4-cli php7.4-dev \
     php7.4-json php7.4-xml php7.4-mysql php7.4-opcache \
     php7.4-readline php7.4-mbstring php-pear php7.4-zip \
     php7.4-redis php7.4-gnupg pkg-config libbson-1.0 libmongoc-1.0-0 \
-    php7.4-gd  && \
-    apt-get update -y && \
-    apt-get upgrade -y
+    php7.4-gd"
+
+RUN add-apt-repository ppa:ondrej/php -y && \
+    apt-get update && \
+    apt-get dist-upgrade -y && apt-get autoremove -y && apt-get clean && \
+    apt-get install -y ${BUILD_DEPS} ${APP_DEPS} && \
+    locale-gen en_US.UTF-8
+
+
+# Apache
+RUN a2dismod status && \
+    a2dissite 000-default
 
 RUN sed -i \
         -e "s/max_execution_time = 30/max_execution_time = 300/" \
@@ -40,11 +37,7 @@ RUN sed -i \
         -e "s/post_max_size = 8M/post_max_size = 50M/" \
         /etc/php/7.4/apache2/php.ini
 
-RUN apt-get install -y python3-dev python3-pip python3-setuptools \
-        python3-lxml libjpeg-dev \
-        libxml2-dev libxslt1-dev zlib1g-dev libfuzzy-dev && \
-    apt-get install -y cron logrotate supervisor syslog-ng-core && \
-    apt-get clean
+RUN apt-get clean
 
 WORKDIR /var/www
 RUN chown www-data:www-data /var/www
