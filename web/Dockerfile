@@ -19,7 +19,8 @@ ENV BUILD_DEPS="build-essential" \
     php7.4-redis php7.4-gnupg pkg-config libbson-1.0 libmongoc-1.0-0 \
     php7.4-gd"
 
-RUN apt-get install software-properties-common && \
+RUN apt-get update && \
+    apt-get install software-properties-common && \
     add-apt-repository ppa:ondrej/php -y && \
     apt-get update && \
     apt-get dist-upgrade -y && apt-get autoremove -y && apt-get clean && \
