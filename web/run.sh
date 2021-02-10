@@ -105,7 +105,7 @@ if [ -r /.firstboot.tmp ]; then
 
         # Generate the admin user PGP key
         echo "Creating admin GnuPG key"
-        echo "Passphrase is: $GPG_PASSWORD"
+        echo "Passphrase is: $MISP_GPG_PASSWORD"
         if [ -z "$MISP_ADMIN_EMAIL" -o -z "$MISP_ADMIN_PASSPHRASE" ]; then
                 echo "No admin details provided, don't forget to generate the PGP key manually!"
         else
@@ -124,6 +124,10 @@ GPGEOF
                 sudo -u www-data gpg --homedir /var/www/MISP/.gnupg --gen-key --batch /tmp/gpg.tmp >>/tmp/install.log
                 rm -f /tmp/gpg.tmp
 		sudo -u www-data gpg --homedir /var/www/MISP/.gnupg --export --armor $MISP_ADMIN_EMAIL > /var/www/MISP/app/webroot/gpg.asc
+
+                sudo -u www-data /var/www/MISP/app/Console/cake Admin setSetting "GnuPG.email" "$MISP_ADMIN_EMAIL"
+                sudo -u www-data /var/www/MISP/app/Console/cake setSetting "GnuPG.homedir" "/var/www/MISP/.gnupg"
+                sudo -u www-data /var/www/MISP/app/Console/cake Admin setSetting "GnuPG.password" "$MISP_GPG_PASSWORD"
         fi
 
         # Display tips
