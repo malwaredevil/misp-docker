@@ -268,15 +268,28 @@ GPGEOF
                 
         fi
 
-        # Display tips
-        cat <<__WELCOME__
-Congratulations!
-Your MISP docker has been successfully booted for the first time.
-Don't forget:
-- Reconfigure postfix to match your environment
-- Change the MISP admin email address to $MISP_ADMIN_EMAIL
+#         # Display tips
+#         cat <<__WELCOME__
+# Congratulations!
 
-__WELCOME__
+
+# __WELCOME__
+
+        echo "***********************************************************************************"
+        echo "**                       MISP-DOCKER SET UP COMPLETE                             **"
+        echo "***********************************************************************************"
+        echo "***********************************************************************************"
+        echo "**   Your MISP docker has been successfully booted for the first time.           **"
+        echo "**   Don't forget:                                                               **"
+        echo "**     - Reconfigure postfix to match your environment                           **"
+        echo "**     - Hardent the system as required by your needs                            **"
+        echo "**                                                                               **"
+        echo "**                                                                               **"
+        echo "**                                                                               **"
+        echo "**                                                                               **"
+        echo "***********************************************************************************"
+        echo "***********************************************************************************"
+        
         rm -f /.firstboot.tmp
 fi
 
@@ -287,11 +300,13 @@ fi
 /var/www/MISP/app/Console/cake live 1
 chown www-data:www-data /var/www/MISP/app/Config/config.php*
 
+# Start supervisord
+echo "Starting supervisord"
+cd /
+exec /usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf
 
-# # Start supervisord
-# echo "Starting supervisord"
-# cd /
-# exec /usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf
-          
-# TO CONTINUE RUNNING AFTER THIS SCRIPT COMPLETES UNCOMMENT THE NEXT LINE
-exec "$@"
+
+echo "***********************************************************************************"
+echo "**                       MISP-DOCKER START UP COMPLETE                           **"
+echo "***********************************************************************************"
+echo "***********************************************************************************"
