@@ -290,7 +290,8 @@ chown www-data:www-data /var/www/MISP/app/Config/config.php*
 # Start supervisord
 echo "Starting supervisord"
 cd /
-/usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf && exit 0
+/usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf &
+exit 0
           
 # TO CONTINUE RUNNING AFTER THIS SCRIPT COMPLETES UNCOMMENT THE NEXT LINE
 
