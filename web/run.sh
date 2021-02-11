@@ -140,7 +140,7 @@ GPGEOF
                 # 'baseurl' => '',
                 # The base url of the application (in the format https://www.mymispinstance.com) as visible externally/by other MISPs.
                 # MISP will encode this URL in sharing groups when including itself. If this value is not set, the baseurl is used as a fallback.
-                sudo -u www-data /var/www/MISP/app/Console/cake Admin setSetting "MISP.external_baseurl" $MISP_BASEURL
+                sudo -u www-data /var/www/MISP/app/Console/cake Admin setSetting "MISP.external_baseurl" "$MISP_BASEURL"
 
                 # Enable GnuPG
                 sudo -u www-data /var/www/MISP/app/Console/cake Admin setSetting "GnuPG.email" "$MISP_ADMIN_EMAIL"
@@ -150,7 +150,7 @@ GPGEOF
                 sudo -u www-data /var/www/MISP/app/Console/cake Admin setSetting "GnuPG.binary" "$(which gpg)"
 
                 # Enable installer org and tune some configurables
-                sudo -u www-data /var/www/MISP/app/Console/cake Admin setSetting "MISP.host_org_id" 1
+                sudo -u www-data /var/www/MISP/app/Console/cake Admin setSetting "MISP.host_org_id" "1"
                 sudo -u www-data /var/www/MISP/app/Console/cake Admin setSetting "MISP.email" "$MISP_ADMIN_EMAIL"
                 sudo -u www-data /var/www/MISP/app/Console/cake Admin setSetting "MISP.disable_emailing" true
                 sudo -u www-data /var/www/MISP/app/Console/cake Admin setSetting "MISP.contact" "$MISP_ADMIN_EMAIL"
@@ -243,6 +243,13 @@ GPGEOF
                 sudo -u www-data /var/www/MISP/app/Console/cake Admin setSetting "Security.password_policy_length" 12
                 sudo -u www-data /var/www/MISP/app/Console/cake Admin setSetting "Security.password_policy_complexity" '/^((?=.*\d)|(?=.*\W+))(?![\n])(?=.*[A-Z])(?=.*[a-z]).*$|.{16,}/'
                 sudo -u www-data /var/www/MISP/app/Console/cake Admin setSetting "Security.self_registration_message" "If you would like to send us a registration request, please fill out the form below. Make sure you fill out as much information as possible in order to ease the task of the administrators."
+        
+                # Set Plugin Settings to reduce RED
+                sudo -u www-data /var/www/MISP/app/Console/cake Admin setSetting "Plugin.Enrichment_services_enable" false
+                sudo -u www-data /var/www/MISP/app/Console/cake Admin setSetting "Plugin.Enrichment_hover_enable" false
+                sudo -u www-data /var/www/MISP/app/Console/cake Admin setSetting "Plugin.Enrichment_hover_popover_only" false
+                sudo -u www-data /var/www/MISP/app/Console/cake Admin setSetting "Plugin.Import_services_enable" false
+                sudo -u www-data /var/www/MISP/app/Console/cake Admin setSetting "Plugin.Export_services_enable" false
         fi
 
         # Display tips
