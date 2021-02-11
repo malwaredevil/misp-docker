@@ -292,3 +292,5 @@ echo "Starting supervisord"
 cd /
 exec /usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf
           
+# TO CONTINUE RUNNING AFTER THIS SCRIPT COMPLETES UNCOMMENT THE NEXT LINE
+# exec "$@"
