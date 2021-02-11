@@ -113,17 +113,16 @@ RUN rm -rf misp-objects && git clone https://github.com/MISP/misp-objects.git &&
 
 # Install MISP Modules
 WORKDIR /opt
-RUN git clone --branch v2.4.134 https://github.com/MISP/misp-modules.git
-RUN cd misp-modules && \
+# RUN git clone --branch v2.4.134 https://github.com/MISP/misp-modules.git
+RUN git clone https://github.com/MISP/misp-modules.git && \
+    cd misp-modules && \
     python3 -m pip install --upgrade pip setuptools wheel && \
     python3 -m pip install scikit-build && \    
     python3 -m pip install opencv-python && \ 
     python3 -m pip install -I -r REQUIREMENTS && \
     python3 -m pip install -I . && \
-    echo "sudo -u www-data misp-modules -s -l 127.0.0.1 &" >>/etc/rc.local
-
-# Supervisord Setup
-RUN ( \
+    echo "sudo -u www-data misp-modules -s -l 127.0.0.1 &" >>/etc/rc.local && \
+    ( \
     echo '[supervisord]'; \
     echo 'nodaemon = true'; \
     echo ''; \
@@ -150,7 +149,7 @@ RUN ( \
     echo 'command=/bin/bash -c "misp-modules -l 127.0.0.1"'; \
     echo 'user = www-data'; \
     echo 'startsecs = 0'; \
-) >> /etc/supervisor/conf.d/supervisord.conf
+    ) >> /etc/supervisor/conf.d/supervisord.conf
 
 #INSTALL SSDEEP
 WORKDIR /usr/local/src
