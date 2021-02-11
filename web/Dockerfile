@@ -78,11 +78,9 @@ RUN chown -R www-data:www-data /var/www/MISP && \
     chmod -R g+ws /var/www/MISP/app/files && \
     chmod -R g+ws /var/www/MISP/app/files/scripts/tmp && \
     chmod +x /var/www/MISP/app/Console/cake && \
-     cp /var/www/MISP/INSTALL/misp.logrotate /etc/logrotate.d/misp && \
-    RUN echo "postfix postfix/main_mailer_type string Local only" \
-  | debconf-set-selections && \
-    echo "postfix postfix/mailname string localhost.localdomain" | \
-    debconf-set-selections && \
+    cp /var/www/MISP/INSTALL/misp.logrotate /etc/logrotate.d/misp && \
+    echo "postfix postfix/main_mailer_type string Local only" | debconf-set-selections && \
+    echo "postfix postfix/mailname string localhost.localdomain" | debconf-set-selections && \
     sed -i 's/^\(daemonize\s*\)yes\s*$/\1no/g' /etc/redis/redis.conf && \
     sed -i 's/^\(bind\s*\)127.0.0.1 ::1\s*$/\1127.0.0.1/g' /etc/redis/redis.conf
 
