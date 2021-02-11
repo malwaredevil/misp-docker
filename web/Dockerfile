@@ -17,7 +17,7 @@ ENV BUILD_DEPS="build-essential" \
     php7.4-json php7.4-xml php7.4-mysql php7.4-opcache \
     php7.4-readline php7.4-mbstring php-pear php7.4-zip \
     php7.4-redis php7.4-gnupg pkg-config libbson-1.0 libmongoc-1.0-0 \
-    php7.4-gd"
+    php7.4-gd php7.4-curl"
 
 RUN apt-get update -y && \
     apt-get install software-properties-common -y && \
