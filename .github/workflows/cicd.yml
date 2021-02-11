@@ -22,3 +22,9 @@ jobs:
         run: cp template.env .env
       - name: Build the stack
         run: docker-compose up
+      - name: Test Plugins
+        run: |
+          curl http://127.0.0.1:6666 >> $CURL_RESPONSE
+          echo "$CURL_RESPONSE
+      - name: Shutdown
+        run: docker-compose down

@@ -1,5 +1,5 @@
 # Malware Devil MISP Docker
-
+![MISP-DOCKER](https://github.com/malwaredevil/misp-docker/workflows/MISP-DOCKER/badge.svg)
 ## About
 
 The files in this repository are used to create a Docker container running a [MISP](http://www.misp-project.org) ("Malware Information Sharing Platform") instance. This is a fork of the https://github.com/MISP/misp-docker docker version.
