@@ -113,8 +113,7 @@ RUN rm -rf misp-objects && git clone https://github.com/MISP/misp-objects.git &&
 
 # Install MISP Modules
 WORKDIR /opt
-# RUN git clone --branch v2.4.134 https://github.com/MISP/misp-modules.git
-RUN git clone https://github.com/MISP/misp-modules.git && \
+RUN git clone --branch v2.4.134 https://github.com/MISP/misp-modules.git && \
     cd misp-modules && \
     python3 -m pip install --upgrade pip setuptools wheel && \
     python3 -m pip install scikit-build && \    
