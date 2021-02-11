@@ -140,7 +140,7 @@ GPGEOF
                 # 'baseurl' => '',
                 # The base url of the application (in the format https://www.mymispinstance.com) as visible externally/by other MISPs.
                 # MISP will encode this URL in sharing groups when including itself. If this value is not set, the baseurl is used as a fallback.
-                sudo -u www-data /var/www/MISP/app/Console/cake Admin setSetting "MISP.external_baseurl" "$MISP_BASEURL"
+                sudo -u www-data /var/www/MISP/app/Console/cake Admin setSetting "MISP.external_baseurl" $MISP_BASEURL
 
                 # Enable GnuPG
                 sudo -u www-data /var/www/MISP/app/Console/cake Admin setSetting "GnuPG.email" "$MISP_ADMIN_EMAIL"
@@ -149,8 +149,8 @@ GPGEOF
                 # FIXME: what if we have not gpg binary but a gpg2 one?
                 sudo -u www-data /var/www/MISP/app/Console/cake Admin setSetting "GnuPG.binary" "$(which gpg)"
 
-                # Enable installer org and tune some configurables
-                sudo -u www-data /var/www/MISP/app/Console/cake Admin setSetting "MISP.host_org_id" "1"
+                # Enable installer org and tune some configurable
+                sudo -u www-data /var/www/MISP/app/Console/cake Admin setSetting "MISP.host_org_id" 1
                 sudo -u www-data /var/www/MISP/app/Console/cake Admin setSetting "MISP.email" "$MISP_ADMIN_EMAIL"
                 sudo -u www-data /var/www/MISP/app/Console/cake Admin setSetting "MISP.disable_emailing" true
                 sudo -u www-data /var/www/MISP/app/Console/cake Admin setSetting "MISP.contact" "$MISP_ADMIN_EMAIL"

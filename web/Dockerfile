@@ -175,7 +175,7 @@ RUN ( \
     echo 'startsecs = 0'; \
     echo ''; \
     echo '[program:misp-modules]'; \
-    echo 'command=/bin/bash -c "misp-modules -s -l 127.0.0.1"'; \
+    echo 'command=/bin/bash -c "misp-modules -l 127.0.0.1"'; \
     echo 'user = www-data'; \
     echo 'startsecs = 0'; \
 ) >> /etc/supervisor/conf.d/supervisord.conf
