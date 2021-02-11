@@ -51,7 +51,7 @@ RUN git config core.filemode false && \
     git submodule foreach --recursive git config core.filemode false
 
 USER root
-RUN pip3 install git+https://github.com/STIXProject/python-stix.git \
+RUN python3 -m pip install git+https://github.com/STIXProject/python-stix.git \
                  git+https://github.com/CybOXProject/python-cybox.git \
                  git+https://github.com/CybOXProject/mixbox.git \
                  git+https://github.com/MAECProject/python-maec.git \
@@ -143,11 +143,11 @@ RUN sudo -E apt-get -y install libpoppler73 libpoppler-dev libpoppler-cpp-dev
 WORKDIR /opt
 RUN git clone --branch v2.4.134 https://github.com/MISP/misp-modules.git
 RUN cd misp-modules && \
-    pip3 install --upgrade pip setuptools wheel && \
-    pip3 install scikit-build && \    
-    pip3 install opencv-python && \ 
-    pip3 install -I -r REQUIREMENTS && \
-    pip3 install -I . && \
+    python3 -m pip install --upgrade pip setuptools wheel && \
+    python3 -m pip install scikit-build && \    
+    python3 -m pip install opencv-python && \ 
+    python3 -m pip install -I -r REQUIREMENTS && \
+    python3 -m pip install -I . && \
     echo "sudo -u www-data misp-modules -s -l 127.0.0.1 &" >>/etc/rc.local
 
 # Supervisord Setup
