@@ -120,35 +120,10 @@ RUN git clone --branch v2.4.134 https://github.com/MISP/misp-modules.git && \
     python3 -m pip install opencv-python && \ 
     python3 -m pip install -I -r REQUIREMENTS && \
     python3 -m pip install -I . && \
-    echo "sudo -u www-data misp-modules -s -l 127.0.0.1 &" >>/etc/rc.local && \
-    ( \
-    echo '[supervisord]'; \
-    echo 'nodaemon = true'; \
-    echo ''; \
-    echo '[program:cron]'; \
-    echo 'command=/usr/sbin/cron -f'; \
-    echo '[program:postfix]'; \
-    echo 'process_name = master'; \
-    echo 'directory = /etc/postfix'; \
-    echo 'command = /usr/sbin/postfix -c /etc/postfix start'; \
-    echo 'startsecs = 0'; \
-    echo ''; \
-    echo '[program:redis-server]'; \
-    echo 'command=redis-server /etc/redis/redis.conf'; \
-    echo ''; \
-    echo '[program:apache2]'; \
-    echo 'command=/bin/bash -c "source /etc/apache2/envvars && exec /usr/sbin/apache2 -D FOREGROUND"'; \
-    echo ''; \
-    echo '[program:resque]'; \
-    echo 'command=/bin/bash /var/www/MISP/app/Console/worker/start.sh'; \
-    echo 'user = www-data'; \
-    echo 'startsecs = 0'; \
-    echo ''; \
-    echo '[program:misp-modules]'; \
-    echo 'command=/bin/bash -c "misp-modules -l 127.0.0.1"'; \
-    echo 'user = www-data'; \
-    echo 'startsecs = 0'; \
-    ) >> /etc/supervisor/conf.d/supervisord.conf
+    echo "sudo -u www-data misp-modules -l 127.0.0.1 &" >>/etc/rc.local
+
+COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+
 
 #INSTALL SSDEEP
 WORKDIR /usr/local/src
