@@ -294,5 +294,4 @@ chown www-data:www-data /var/www/MISP/app/Config/config.php*
 # exec /usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf
           
 # TO CONTINUE RUNNING AFTER THIS SCRIPT COMPLETES UNCOMMENT THE NEXT LINE
-
-# exec "$@"
+exec "$@"
