@@ -140,46 +140,22 @@ RUN rm -rf misp-objects && git clone https://github.com/MISP/misp-objects.git &&
 RUN sudo -E apt-get -y install libpoppler73 libpoppler-dev libpoppler-cpp-dev
 
 # Install MISP Modules
-WORKDIR /opt
-RUN git clone --branch v2.4.134 https://github.com/MISP/misp-modules.git
-RUN cd misp-modules && \
-    python3 -m pip install --upgrade pip setuptools wheel && \
-    python3 -m pip install scikit-build && \    
-    python3 -m pip install opencv-python && \ 
-    python3 -m pip install -I -r REQUIREMENTS && \
-    python3 -m pip install -I . && \
-    echo "sudo -u www-data misp-modules -s -l 127.0.0.1 &" >>/etc/rc.local
+# WORKDIR /opt
+# RUN git clone -H  https://github.com/MISP/misp-modules.git
+# RUN cd misp-modules && \
+#     python3 -m pip install --upgrade pip setuptools wheel && \
+#     python3 -m pip install scikit-build && \    
+#     python3 -m pip install opencv-python && \ 
+#     python3 -m pip install -I -r REQUIREMENTS && \
+#     python3 -m pip install -I . && \
+#     echo "sudo -u www-data misp-modules -s -l 127.0.0.1 &" >>/etc/rc.local
+WORKDIR /usr/local/src
+RUN sudo -H git clone https://github.com/MISP/misp-modules.git
+WORKDIR /usr/local/src/misp-modules
+RUN sudo -H git checkout ; \
+    sudo pip3 install -I -r REQUIREMENTS ;  \
+    sudo pip3 install -I .
 
-# Supervisord Setup
-RUN ( \
-    echo '[supervisord]'; \
-    echo 'nodaemon = true'; \
-    echo ''; \
-    echo '[program:postfix]'; \
-    echo 'process_name = master'; \
-    echo 'directory = /etc/postfix'; \
-    echo 'command = /usr/sbin/postfix -c /etc/postfix start'; \
-    echo 'startsecs = 0'; \
-    echo 'autorestart = false'; \
-    echo ''; \
-    echo '[program:redis-server]'; \
-    echo 'command=redis-server /etc/redis/redis.conf'; \
-    echo ''; \
-    echo '[program:apache2]'; \
-    echo 'command=/bin/bash -c "source /etc/apache2/envvars && exec /usr/sbin/apache2 -D FOREGROUND"'; \
-    echo ''; \
-    echo '[program:resque]'; \
-    echo 'command=/bin/bash /var/www/MISP/app/Console/worker/start.sh'; \
-    echo 'user = www-data'; \
-    echo 'startsecs = 0'; \
-    echo 'autorestart = false'; \
-    echo ''; \
-    echo '[program:misp-modules]'; \
-    echo 'command=/bin/bash -c "misp-modules -s -l 127.0.0.1"'; \
-    echo 'user = www-data'; \
-    echo 'startsecs = 0'; \
-    echo 'autorestart = false'; \
-) >> /etc/supervisor/conf.d/supervisord.conf
 
 #INSTALL SSDEEP
 WORKDIR /usr/local/src
@@ -214,6 +190,7 @@ RUN chmod 0755 /run.sh && touch /.firstboot.tmp
 # Make a backup of /var/www/MISP to restore it to the local moint point at first boot
 WORKDIR /var/www/MISP
 RUN tar czpf /root/MISP.tgz .
+COPY supervisord.conf /etc/supervisor/conf.d/
 
 # START UP
 VOLUME /var/www/MISP
