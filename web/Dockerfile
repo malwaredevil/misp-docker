@@ -181,10 +181,8 @@ RUN chmod 0755 /run.sh && touch /.firstboot.tmp
 # # Make a backup of /var/www/MISP to restore it to the local moint point at first boot
 # WORKDIR /var/www/MISP
 # RUN tar czpf /root/MISP.tgz .
-
-COPY run.sh /bin/run.sh
-RUN chmod +x /bin/run.sh
-ENTRYPOINT [ "/bin/run.sh" ]
+CMD ["/usr/bin/supervisord"]
+ENTRYPOINT [ "/run.sh" ]
 
 
 
