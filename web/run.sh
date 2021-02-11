@@ -244,12 +244,28 @@ GPGEOF
                 sudo -u www-data /var/www/MISP/app/Console/cake Admin setSetting "Security.password_policy_complexity" '/^((?=.*\d)|(?=.*\W+))(?![\n])(?=.*[A-Z])(?=.*[a-z]).*$|.{16,}/'
                 sudo -u www-data /var/www/MISP/app/Console/cake Admin setSetting "Security.self_registration_message" "If you would like to send us a registration request, please fill out the form below. Make sure you fill out as much information as possible in order to ease the task of the administrators."
         
-                # Set Plugin Settings to reduce RED
-                sudo -u www-data /var/www/MISP/app/Console/cake Admin setSetting "Plugin.Enrichment_services_enable" false
+                # Set Plugin Settings
+                # Enrichment
+                sudo -u www-data /var/www/MISP/app/Console/cake Admin setSetting "Plugin.Enrichment_services_enable" true
                 sudo -u www-data /var/www/MISP/app/Console/cake Admin setSetting "Plugin.Enrichment_hover_enable" false
-                sudo -u www-data /var/www/MISP/app/Console/cake Admin setSetting "Plugin.Enrichment_hover_popover_only" false
-                sudo -u www-data /var/www/MISP/app/Console/cake Admin setSetting "Plugin.Import_services_enable" false
-                sudo -u www-data /var/www/MISP/app/Console/cake Admin setSetting "Plugin.Export_services_enable" false
+                sudo -u www-data /var/www/MISP/app/Console/cake Admin setSetting "Plugin.Enrichment_hover_popover_only" true
+                sudo -u www-data /var/www/MISP/app/Console/cake Admin setSetting "Plugin.Enrichment_timeout" 10
+                sudo -u www-data /var/www/MISP/app/Console/cake Admin setSetting "Plugin.Enrichment_hover_timeout" 5
+                sudo -u www-data /var/www/MISP/app/Console/cake Admin setSetting "Plugin.Enrichment_services_url" "http://127.0.0.1"
+                sudo -u www-data /var/www/MISP/app/Console/cake Admin setSetting "Plugin.Enrichment_services_port" 6666
+
+                # Import
+                sudo -u www-data /var/www/MISP/app/Console/cake Admin setSetting "Plugin.Import_services_enable" true
+                sudo -u www-data /var/www/MISP/app/Console/cake Admin setSetting "Plugin.Import_timeout" 10  
+                sudo -u www-data /var/www/MISP/app/Console/cake Admin setSetting "Plugin.Import_services_url" "http://127.0.0.1"
+                sudo -u www-data /var/www/MISP/app/Console/cake Admin setSetting "Plugin.Import_services_port" 6666
+
+                # Export
+                sudo -u www-data /var/www/MISP/app/Console/cake Admin setSetting "Plugin.Export_services_enable" true
+                sudo -u www-data /var/www/MISP/app/Console/cake Admin setSetting "Plugin.Export_timeout" 10 
+                sudo -u www-data /var/www/MISP/app/Console/cake Admin setSetting "Plugin.Export_services_url" "http://127.0.0.1"
+                sudo -u www-data /var/www/MISP/app/Console/cake Admin setSetting "Plugin.Export_services_port" 6666
+                
         fi
 
         # Display tips
