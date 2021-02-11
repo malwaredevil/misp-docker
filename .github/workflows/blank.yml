@@ -1,0 +1,24 @@
+# This is a basic workflow to help you get started with Actions
+
+name: MISP-DOCKER CI CD
+
+# Controls when the action will run. 
+on:
+  # Triggers the workflow on push or pull request events but only for the master branch
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  docker-tests:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./
+    steps:
+      - uses: actions/checkout@v2
+      - name: Copy .env file
+        run: cp template.env .env
+      - name: Build the stack
+        run: docker-compose up
