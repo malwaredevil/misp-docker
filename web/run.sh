@@ -282,7 +282,7 @@ GPGEOF
         echo "**   Your MISP docker has been successfully booted for the first time.           **"
         echo "**   Don't forget:                                                               **"
         echo "**     - Reconfigure postfix to match your environment                           **"
-        echo "**     - Hardent the system as required by your needs                            **"
+        echo "**     - Harden the system as required by your needs                             **"
         echo "**                                                                               **"
         echo "**                                                                               **"
         echo "**                                                                               **"
