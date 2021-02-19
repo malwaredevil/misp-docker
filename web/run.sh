@@ -221,13 +221,13 @@ GPGEOF
                 sudo -u www-data /var/www/MISP/app/Console/cake Admin setSetting "MISP.block_old_event_alert_age" ""
                 sudo -u www-data /var/www/MISP/app/Console/cake Admin setSetting "MISP.block_old_event_alert_by_date" ""
                 sudo -u www-data /var/www/MISP/app/Console/cake Admin setSetting "MISP.incoming_tags_disabled_by_default" false
-                sudo -u www-data /var/www/MISP/app/Console/cake Admin setSetting "MISP.maintenance_message" "Great things are happening! MISP is undergoing maintenance, but will return shortly. You can contact the administration at \$email."
-                sudo -u www-data /var/www/MISP/app/Console/cake Admin setSetting "MISP.footermidleft" "This is an initial install"
-                sudo -u www-data /var/www/MISP/app/Console/cake Admin setSetting "MISP.footermidright" "Please configure and harden accordingly"
-                sudo -u www-data /var/www/MISP/app/Console/cake Admin setSetting "MISP.welcome_text_top" "Initial Install, please configure"
+                # sudo -u www-data /var/www/MISP/app/Console/cake Admin setSetting "MISP.maintenance_message" "Great things are happening! MISP is undergoing maintenance, but will return shortly. You can contact the administration at \$email."
+                # sudo -u www-data /var/www/MISP/app/Console/cake Admin setSetting "MISP.footermidleft" "This is an initial install"
+                # sudo -u www-data /var/www/MISP/app/Console/cake Admin setSetting "MISP.footermidright" "Please configure and harden accordingly"
+                # sudo -u www-data /var/www/MISP/app/Console/cake Admin setSetting "MISP.welcome_text_top" "Initial Install, please configure"
 
 
-                sudo -u www-data /var/www/MISP/app/Console/cake Admin setSetting "MISP.welcome_text_bottom" "Welcome to MISP."
+                # sudo -u www-data /var/www/MISP/app/Console/cake Admin setSetting "MISP.welcome_text_bottom" "Welcome to MISP."
                 sudo -u www-data /var/www/MISP/app/Console/cake Admin setSetting "MISP.attachments_dir" "/var/www/MISP/app/files"
                 sudo -u www-data /var/www/MISP/app/Console/cake Admin setSetting "MISP.download_attachments_on_load" true
                 sudo -u www-data /var/www/MISP/app/Console/cake Admin setSetting "MISP.title_text" "MISP"
