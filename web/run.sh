@@ -10,7 +10,7 @@
 
 set -e
 
-if [ -r /.firstboot.tmp ]; then
+if [ -r /var/www/MISP/firstboot.tmp ]; then
         echo "Container started for the fist time. Setup might time a few minutes. Please wait..."
         echo "(Details are logged in /tmp/install.log)"
         export DEBIAN_FRONTEND=noninteractive
@@ -201,9 +201,9 @@ if [ -r /.firstboot.tmp ]; then
                 sudo -u www-data /var/www/MISP/app/Console/cake Admin setSetting "MISP.block_old_event_alert_by_date" ""
                 sudo -u www-data /var/www/MISP/app/Console/cake Admin setSetting "MISP.incoming_tags_disabled_by_default" false
                 sudo -u www-data /var/www/MISP/app/Console/cake Admin setSetting "MISP.maintenance_message" "Great things are happening! MISP is undergoing maintenance, but will return shortly. You can contact the administration at \$email."
-                sudo -u www-data /var/www/MISP/app/Console/cake Admin setSetting "MISP.footermidleft" "This is an initial install"
-                sudo -u www-data /var/www/MISP/app/Console/cake Admin setSetting "MISP.footermidright" "Please configure and harden accordingly"
-                sudo -u www-data /var/www/MISP/app/Console/cake Admin setSetting "MISP.welcome_text_top" "Initial Install, please configure"
+                sudo -u www-data /var/www/MISP/app/Console/cake Admin setSetting "MISP.footermidleft" ""
+                sudo -u www-data /var/www/MISP/app/Console/cake Admin setSetting "MISP.footermidright" ""
+                sudo -u www-data /var/www/MISP/app/Console/cake Admin setSetting "MISP.welcome_text_top" ""
 
 
                 sudo -u www-data /var/www/MISP/app/Console/cake Admin setSetting "MISP.welcome_text_bottom" "Welcome to MISP."
@@ -268,12 +268,13 @@ Passphrase: $MISP_GPG_PASSWORD
 GPGEOF
 fi
 
-if [ -r /.firstboot.tmp ]; then
+if [ -r /var/www/MISP/firstboot.tmp ]; then
         
         sudo -u www-data gpg --homedir /var/www/MISP/.gnupg --gen-key --batch /tmp/gpg.tmp >>/tmp/install.log
-        rm -f /tmp/gpg.tmp
+        rm -rf /tmp/gpg.tmp
         sudo -u www-data gpg --homedir /var/www/MISP/.gnupg --export --armor $MISP_ADMIN_EMAIL > /var/www/MISP/app/webroot/gpg.asc
-        rm -f /.firstboot.tmp
+        rm -rf /var/www/MISP/firstboot.tmp
+        rm -rf /tmp/*
 fi
 
 # Make MISP live - this isn't ideal, as it means taking an instance
