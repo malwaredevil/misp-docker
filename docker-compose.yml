@@ -20,8 +20,8 @@ services:
       - 80:80
       - 443:443
     volumes:
-      - nginx-main:/etc/nginx
-      - nginx-ssl:/etc/ssl/
+      - /etc/nginx:/etc/nginx
+      - /etc/ssl/:/etc/ssl/private
   misp:
     build: web
     container_name: misp
