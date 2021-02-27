@@ -16,7 +16,7 @@ ENV BUILD_DEPS="build-essential" \
     libapache2-mod-php7.4 php7.4 php7.4-cli php7.4-dev \
     php7.4-json php7.4-xml php7.4-mysql php7.4-opcache \
     php7.4-readline php7.4-mbstring php-pear php7.4-zip \
-    php7.4-redis php7.4-gnupg pkg-config libbson-1.0 libmongoc-1.0-0 \
+    php7.4-redis php7.4-gnupg pkg-config php-curl libbson-1.0 libmongoc-1.0-0 \
     php7.4-gd libpoppler73 libpoppler-dev libpoppler-cpp-dev"
 
 RUN apt-get update -y && \
