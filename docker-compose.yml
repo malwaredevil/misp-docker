@@ -1,27 +1,5 @@
 version: '3.4'
 services:
-  portainer:
-    container_name: portainer
-    hostname: portainer
-    image: portainer/portainer-ce
-    restart: unless-stopped
-    ports:
-      - "8080:8000"
-      - "9090:9000"
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-      - portainer_data:/data portainer/portainer-ce
-  reverse:
-    container_name: reverse
-    hostname: reverse
-    image: nginx
-    restart: always
-    ports:
-      - 80:80
-      - 443:443
-    volumes:
-      - nginx-main:/etc/nginx
-      - nginx-ssl:/etc/ssl/private
   misp:
     build: web
     container_name: misp
@@ -31,7 +9,8 @@ services:
     image: misp:latest
     restart: unless-stopped
     ports:
-      - "8081:80"
+      - "80:80"
+      - "443:443"
     volumes:
       - /dev/urandom:/dev/random
       - misp-docker-web:/var/www/MISP
@@ -53,10 +32,3 @@ volumes:
     name: "misp-docker-web"
   misp-docker-startup:
     name: "misp-docker-startup"
-  nginx-main:
-    name: "nginx-main"
-  nginx-ssl:
-    name: "nginx-ssl"
-  portainer_data:
-    name: "portainer_data"
-
