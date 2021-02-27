@@ -35,6 +35,7 @@ services:
     volumes:
       - /dev/urandom:/dev/random
       - misp-docker-web:/var/www/MISP
+      - misp-docker-startup:/opt/misp
     env_file:
       .env
   db:
@@ -47,10 +48,13 @@ services:
       .env
 volumes:
   misp-docker-db:
+    name: "misp-docker-db"
   misp-docker-web:
     name: "misp-docker-web"
+  misp-docker-startup:
+    name: "misp-docker-startup"
   nginx-main:
-      name: "nginx-main"
+    name: "nginx-main"
   nginx-ssl:
     name: "nginx-ssl"
   portainer_data:
