@@ -2,6 +2,7 @@ version: '3.4'
 services:
   portainer:
     container_name: portainer
+    hostname: portainer
     image: portainer/portainer-ce
     restart: unless-stopped
     ports:
@@ -10,21 +11,23 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - portainer_data:/data portainer/portainer-ce
-  nginx:
-    container_name: nginx
+  reverse:
+    container_name: reverse
+    hostname: reverse
     image: nginx
-    restart: always
+    restart: unless-stopped
     ports:
       - 80:80
       - 443:443
     volumes:
       - nginx-main:/etc/nginx
       - nginx-ssl:/etc/ssl/
-  web:
-    build: web
+  misp:
+    build: misp
+    container_name: misp
+    hostname: misp
     depends_on:
-      - db
-    container_name: misp_web
+      - misp_db
     image: misp:latest
     restart: unless-stopped
     ports:
@@ -34,8 +37,9 @@ services:
       - misp-docker-web:/var/www/MISP
     env_file:
       .env
-  db:
+  misp_db:
     container_name: misp_db
+    hostname: misp_db
     image: mysql/mysql-server:5.7
     restart: unless-stopped
     volumes:
