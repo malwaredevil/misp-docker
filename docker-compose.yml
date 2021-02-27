@@ -15,7 +15,7 @@ services:
     container_name: reverse
     hostname: reverse
     image: nginx
-    restart: unless-stopped
+    restart: always
     ports:
       - 80:80
       - 443:443
@@ -23,7 +23,7 @@ services:
       - nginx-main:/etc/nginx
       - nginx-ssl:/etc/ssl/
   misp:
-    build: misp
+    build: web
     container_name: misp
     hostname: misp
     depends_on:
