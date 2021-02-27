@@ -27,7 +27,7 @@ services:
     container_name: misp
     hostname: misp
     depends_on:
-      - misp_db
+      - db
     image: misp:latest
     restart: unless-stopped
     ports:
@@ -37,9 +37,8 @@ services:
       - misp-docker-web:/var/www/MISP
     env_file:
       .env
-  misp_db:
+  db:
     container_name: misp_db
-    hostname: misp_db
     image: mysql/mysql-server:5.7
     restart: unless-stopped
     volumes:
