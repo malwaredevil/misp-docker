@@ -10,7 +10,7 @@
 
 set -e
 
-if [ -r /.firstboot.tmp ]; then
+if [ -r /var/www/MISP/firstboot.tmp ]; then
         echo "Container started for the fist time. Setup might time a few minutes. Please wait..."
         echo "(Details are logged in /tmp/install.log)"
         export DEBIAN_FRONTEND=noninteractive
@@ -103,27 +103,6 @@ if [ -r /.firstboot.tmp ]; then
                 sed -i "s/'baseurl' => '',/'baseurl' => '$MISP_BASEURL',/g" /var/www/MISP/app/Config/config.php
         fi
 
-        # Generate the admin user PGP key
-        echo "Creating admin GnuPG key"
-        echo "Passphrase is: $MISP_GPG_PASSWORD"
-        if [ -z "$MISP_ADMIN_EMAIL" -o -z "$MISP_ADMIN_PASSPHRASE" ]; then
-                echo "No admin details provided, don't forget to generate the PGP key manually!"
-        else
-                echo "Generating admin PGP key ... (please be patient, we need some entropy)"
-                cat >/tmp/gpg.tmp <<GPGEOF
-%echo Generating a basic OpenPGP key
-Key-Type: RSA
-Key-Length: 2048
-Name-Real: MISP Admin
-Name-Email: $MISP_ADMIN_EMAIL
-Expire-Date: 0
-Passphrase: $MISP_GPG_PASSWORD
-%commit
-%echo Done
-GPGEOF
-                sudo -u www-data gpg --homedir /var/www/MISP/.gnupg --gen-key --batch /tmp/gpg.tmp >>/tmp/install.log
-                rm -f /tmp/gpg.tmp
-		sudo -u www-data gpg --homedir /var/www/MISP/.gnupg --export --armor $MISP_ADMIN_EMAIL > /var/www/MISP/app/webroot/gpg.asc
                 # Less Red
                 sudo -u www-data /var/www/MISP/app/Console/cake Admin setSetting "MISP.language" "eng"
                 sudo -u www-data /var/www/MISP/app/Console/cake Admin setSetting "MISP.host_org_id" 1
@@ -222,9 +201,9 @@ GPGEOF
                 sudo -u www-data /var/www/MISP/app/Console/cake Admin setSetting "MISP.block_old_event_alert_by_date" ""
                 sudo -u www-data /var/www/MISP/app/Console/cake Admin setSetting "MISP.incoming_tags_disabled_by_default" false
                 sudo -u www-data /var/www/MISP/app/Console/cake Admin setSetting "MISP.maintenance_message" "Great things are happening! MISP is undergoing maintenance, but will return shortly. You can contact the administration at \$email."
-                sudo -u www-data /var/www/MISP/app/Console/cake Admin setSetting "MISP.footermidleft" "This is an initial install"
-                sudo -u www-data /var/www/MISP/app/Console/cake Admin setSetting "MISP.footermidright" "Please configure and harden accordingly"
-                sudo -u www-data /var/www/MISP/app/Console/cake Admin setSetting "MISP.welcome_text_top" "Initial Install, please configure"
+                sudo -u www-data /var/www/MISP/app/Console/cake Admin setSetting "MISP.footermidleft" ""
+                sudo -u www-data /var/www/MISP/app/Console/cake Admin setSetting "MISP.footermidright" ""
+                sudo -u www-data /var/www/MISP/app/Console/cake Admin setSetting "MISP.welcome_text_top" ""
 
 
                 sudo -u www-data /var/www/MISP/app/Console/cake Admin setSetting "MISP.welcome_text_bottom" "Welcome to MISP."
@@ -267,30 +246,35 @@ GPGEOF
                 sudo -u www-data /var/www/MISP/app/Console/cake Admin setSetting "Plugin.Export_services_port" 6666
                 
         fi
-
-#         # Display tips
-#         cat <<__WELCOME__
-# Congratulations!
-
-
-# __WELCOME__
-
-        echo "***********************************************************************************"
-        echo "**                       MISP-DOCKER SET UP COMPLETE                             **"
-        echo "***********************************************************************************"
-        echo "***********************************************************************************"
-        echo "**   Your MISP docker has been successfully booted for the first time.           **"
-        echo "**   Don't forget:                                                               **"
-        echo "**     - Reconfigure postfix to match your environment                           **"
-        echo "**     - Harden the system as required by your needs                             **"
-        echo "**                                                                               **"
-        echo "**                                                                               **"
-        echo "**                                                                               **"
-        echo "**                                                                               **"
-        echo "***********************************************************************************"
-        echo "***********************************************************************************"
         
-        rm -f /.firstboot.tmp
+
+        # Generate the admin user PGP key
+        echo "Creating admin GnuPG key"
+        echo "Passphrase is: $MISP_GPG_PASSWORD"
+        if [ -z "$MISP_ADMIN_EMAIL" -o -z "$MISP_ADMIN_PASSPHRASE" ]; then
+                echo "No admin details provided, don't forget to generate the PGP key manually!"
+        else
+                echo "Generating admin PGP key ... (please be patient, we need some entropy)"
+                cat >/tmp/gpg.tmp <<GPGEOF
+%echo Generating a basic OpenPGP key
+Key-Type: RSA
+Key-Length: 2048
+Name-Real: MISP Admin
+Name-Email: $MISP_ADMIN_EMAIL
+Expire-Date: 0
+Passphrase: $MISP_GPG_PASSWORD
+%commit
+%echo Done
+GPGEOF
+fi
+
+if [ -r /var/www/MISP/firstboot.tmp ]; then
+        
+        sudo -u www-data gpg --homedir /var/www/MISP/.gnupg --gen-key --batch /tmp/gpg.tmp >>/tmp/install.log
+        rm -rf /tmp/gpg.tmp
+        sudo -u www-data gpg --homedir /var/www/MISP/.gnupg --export --armor $MISP_ADMIN_EMAIL > /var/www/MISP/app/webroot/gpg.asc
+        rm -rf /var/www/MISP/firstboot.tmp
+        rm -rf /tmp/*
 fi
 
 # Make MISP live - this isn't ideal, as it means taking an instance

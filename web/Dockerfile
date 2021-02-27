@@ -149,7 +149,8 @@ RUN phpenmod ssdeep && \
 # Add run script
 # Trigger to perform first boot operations
 ADD run.sh /run.sh
-RUN chmod 0755 /run.sh && touch /.firstboot.tmp
+RUN chmod 0755 /run.sh 
+RUN touch /var/www/MISP/firstboot.tmp
 
 # # Make a backup of /var/www/MISP to restore it to the local moint point at first boot
 # WORKDIR /var/www/MISP
