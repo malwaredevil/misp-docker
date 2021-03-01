@@ -10,7 +10,7 @@
 
 set -e
 
-if [ -r /var/www/MISP/firstboot.tmp ]; then
+if [ -r /opt/misp/firstboot.tmp ]; then
         echo "Container started for the fist time. Setup might time a few minutes. Please wait..."
         echo "(Details are logged in /tmp/install.log)"
         export DEBIAN_FRONTEND=noninteractive
@@ -268,13 +268,13 @@ Passphrase: $MISP_GPG_PASSWORD
 GPGEOF
 fi
 
-if [ -r /var/www/MISP/firstboot.tmp ]; then
+if [ -r /opt/misp/firstboot.tmp ]; then
         
         sudo -u www-data gpg --homedir /var/www/MISP/.gnupg --gen-key --batch /tmp/gpg.tmp >>/tmp/install.log
         rm -rf /tmp/gpg.tmp
         sudo -u www-data gpg --homedir /var/www/MISP/.gnupg --export --armor $MISP_ADMIN_EMAIL > /var/www/MISP/app/webroot/gpg.asc
-        rm -rf /var/www/MISP/firstboot.tmp
-        rm -rf /tmp/*
+        sudo rm -rf /opt/misp/firstboot.tmp
+        sudo rm -rf /tmp/*
 fi
 
 # Make MISP live - this isn't ideal, as it means taking an instance
