@@ -1,6 +1,13 @@
 
 FROM ubuntu:bionic
 
+# Add run script
+# Trigger to perform first boot operations
+ADD run.sh /opt/misp/run.sh
+RUN chmod 0755 /opt/misp/run.sh 
+RUN touch /opt/misp/firstboot.tmp
+RUN chmod 0777 /opt/misp/firstboot.tmp
+
 # Install core components
 ENV DEBIAN_FRONTEND noninteractive
 ENV LANG en_US.UTF-8
@@ -146,12 +153,7 @@ RUN phpenmod ssdeep && \
     update-alternatives --set php /usr/bin/php7.4 && \
     sed -i -E 's/^(\s*)system\(\);/\1unix-stream("\/dev\/log");/' /etc/syslog-ng/syslog-ng.conf
 
-# Add run script
-# Trigger to perform first boot operations
-ADD run.sh /opt/misp/run.sh
-RUN chmod 0755 /opt/misp/run.sh 
-RUN touch /opt/misp/firstboot.tmp
-RUN chmod 0777 /opt/misp/firstboot.tmp
+
 
 # # Make a backup of /var/www/MISP to restore it to the local moint point at first boot
 # WORKDIR /var/www/MISP
