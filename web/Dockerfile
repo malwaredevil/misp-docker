@@ -1,5 +1,5 @@
 
-FROM ubuntu:bionic
+FROM ubuntu:focal
 
 # Add run script
 # Trigger to perform first boot operations
@@ -24,14 +24,15 @@ ENV BUILD_DEPS="build-essential" \
     php7.4-json php7.4-xml php7.4-mysql php7.4-opcache \
     php7.4-readline php7.4-mbstring php-pear php7.4-zip \
     php7.4-redis php7.4-gnupg pkg-config php-curl libbson-1.0 libmongoc-1.0-0 \
-    php7.4-gd libpoppler73 libpoppler-dev libpoppler-cpp-dev"
+    php7.4-gd libpoppler97 libpoppler-dev libpoppler-cpp-dev pkg-config libbson-1.0 libmongoc-1.0-0 \
+    php-zip php-bcmath php-intl"
 
 RUN apt-get update -y && \
     apt-get install software-properties-common -y && \
     add-apt-repository ppa:ondrej/php -y && \
     apt-get update -y && \
     apt-get dist-upgrade -y && apt-get autoremove -y && apt-get clean && \
-    apt-get install -y ${BUILD_DEPS} ${APP_DEPS} && \
+    apt-get install -y --fix-missing ${BUILD_DEPS} ${APP_DEPS} && \
     locale-gen en_US.UTF-8 && \
      a2dismod status && \
     a2dissite 000-default && \
