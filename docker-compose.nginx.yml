@@ -1,0 +1,18 @@
+version: '3.4'
+
+services:
+  reverse:
+    container_name: reverse
+    hostname: reverse
+    image: nginx
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - nginx_etc_nginx:/etc/nginx
+      - nginx_etc_ssl_private:/etc/ssl/private
+volumes:
+  nginx_etc_nginx:
+    name: "nginx_etc_nginx"
+  nginx_etc_ssl_private:
+    name: "nginx_etc_ssl_private"
