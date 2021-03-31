@@ -22,3 +22,6 @@ Please review the template.env for the new variables
 
 ## TODO
 - [ ] Update Documentation to include how to to use nginx as reverse proxy if desired (USE THIS AS GUIDE: https://www.freecodecamp.org/news/docker-nginx-letsencrypt-easy-secure-reverse-proxy-40165ba3aee2/).
+
+## TOWANT
+- [ ] Automate nginx deployment model.
