@@ -19,3 +19,6 @@ Please review the template.env for the new variables
   - Import
   - Export
 - Reduces some of the RED and YELLOW warnings
+
+## TODO
+- [ ] Update Documentation to include how to to use nginx as reverse proxy if desired.
