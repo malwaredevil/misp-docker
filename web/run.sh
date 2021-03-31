@@ -95,13 +95,13 @@ if [ -r /opt/misp/firstboot.tmp ]; then
         sed -i "s/8889/3306/" database.php
         sed -i "s/db\s*password/$MYSQL_PASSWORD/" database.php
 
-        # Fix the base url
-        if [ -z "$MISP_BASEURL" ]; then
-                echo "No base URL defined, don't forget to define it manually!"
-        else
-                echo "Fixing the MISP base URL ($MISP_BASEURL) ..."
-                sed -i "s@'baseurl'[\t ]*=>[\t ]*'',@'baseurl' => '$MISP_BASEURL',@g" /var/www/MISP/app/Config/config.php
-        fi
+        # # Fix the base url
+        # if [ -z "$MISP_BASEURL" ]; then
+        #         echo "No base URL defined, don't forget to define it manually!"
+        # else
+        #         echo "Fixing the MISP base URL ($MISP_BASEURL) ..."
+        #         sed -i "s@'baseurl'[\t ]*=>[\t ]*'',@'baseurl' => '$MISP_BASEURL',@g" /var/www/MISP/app/Config/config.php
+        # fi
 
         # Less Red
         sudo -u www-data /var/www/MISP/app/Console/cake Admin setSetting "MISP.language" "eng"
@@ -113,13 +113,13 @@ if [ -r /opt/misp/firstboot.tmp ]; then
         sudo -u www-data /var/www/MISP/app/Console/cake Admin setSetting "Session.cookieTimeout" 3600
 
         # Change base url, either with this CLI command or in the UI
-        # sudo -u www-data /var/www/MISP/app/Console/cake Baseurl $MISP_BASEURL
+        sudo -u www-data /var/www/MISP/app/Console/cake Baseurl $MISP_BASEURL
         # example: 'baseurl' => 'https://<your.FQDN.here>',
         # alternatively, you can leave this field empty if you would like to use relative pathing in MISP
         # 'baseurl' => '',
         # The base url of the application (in the format https://www.mymispinstance.com) as visible externally/by other MISPs.
         # MISP will encode this URL in sharing groups when including itself. If this value is not set, the baseurl is used as a fallback.
-        # sudo -u www-data /var/www/MISP/app/Console/cake Admin setSetting "MISP.external_baseurl" $MISP_BASEURL
+        sudo -u www-data /var/www/MISP/app/Console/cake Admin setSetting "MISP.external_baseurl" $MISP_BASEURL
 
         # Enable GnuPG
         sudo -u www-data /var/www/MISP/app/Console/cake Admin setSetting "GnuPG.email" "$MISP_ADMIN_EMAIL"
