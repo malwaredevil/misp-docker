@@ -11,7 +11,7 @@ services:
       - nginx_etc_nginx:/etc/nginx
       - nginx_etc_ssl_private:/etc/ssl/private
   misp:
-    build: web
+    build: misp
     container_name: misp
     hostname: misp
     depends_on:
