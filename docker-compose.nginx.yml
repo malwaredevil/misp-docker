@@ -1,5 +1,4 @@
 version: '3.4'
-
 services:
   reverse:
     container_name: reverse
@@ -11,7 +10,37 @@ services:
     volumes:
       - nginx_etc_nginx:/etc/nginx
       - nginx_etc_ssl_private:/etc/ssl/private
+  misp:
+    build: web
+    container_name: misp
+    hostname: misp
+    depends_on:
+      - db
+    image: misp:latest
+    restart: unless-stopped
+    ports:
+      - "8080:80"
+    volumes:
+      - /dev/urandom:/dev/random
+      - misp-docker-web:/var/www/MISP
+      - misp-docker-startup:/opt/misp
+    env_file:
+      .env
+  db:
+    container_name: misp_db
+    image: mysql/mysql-server:5.7
+    restart: unless-stopped
+    volumes:
+      - misp-docker-db:/var/lib/mysql
+    env_file:
+      .env
 volumes:
+  misp-docker-db:
+    name: "misp-docker-db"
+  misp-docker-web:
+    name: "misp-docker-web"
+  misp-docker-startup:
+    name: "misp-docker-startup"
   nginx_etc_nginx:
     name: "nginx_etc_nginx"
   nginx_etc_ssl_private:
